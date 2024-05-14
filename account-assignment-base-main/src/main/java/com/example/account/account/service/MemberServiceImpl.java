@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
     public ResponseEntity<CustomApiResponse<?>> signUp(SignUpDto.Req req) {
+
         Member member = req.toEntity();
         // 회원 가입
         Member savedMember = memberRepository.save(member);
