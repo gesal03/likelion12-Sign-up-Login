@@ -22,6 +22,13 @@ public class MemberServiceImpl implements MemberService{
                     .body(responseBody);
 
         }
+        // 비밀번호 일치 여부 파악
+        if (req.getPassword() != req.getPasswordCheck()) {
+            CustomApiResponse<Object> responseBody = CustomApiResponse.createFailWithoutData(HttpStatus.BAD_REQUEST.value(), "비밀번호가 일치하지 않습니다.");
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(responseBody);
+        }
         Member member = req.toEntity();
         // 회원 가입
         Member savedMember = memberRepository.save(member);
