@@ -1,5 +1,6 @@
 package com.example.account.account.controller;
 
+import com.example.account.account.dto.LogInDto;
 import com.example.account.account.dto.SignUpDto;
 import com.example.account.util.response.CustomApiResponse;
 import jakarta.validation.Valid;
@@ -17,12 +18,12 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public RequestEntity<CustomApiResponse<?>> logIn() {
-        return memberService.logIn();
+    public RequestEntity<CustomApiResponse<?>> logIn(@RequestBody LogInDto.Req req) {
+        return memberService.logIn(req);
     }
 
     @DeleteMapping("/withdraw/{memberId}")
-    public RequestEntity<CustomApiResponse<?>> deleteMember() {
-        return memberService.deleteMember();
+    public RequestEntity<CustomApiResponse<?>> deleteMember(@PathVariable("memberId") Long memberId) {
+        return memberService.deleteMember(memberId);
     }
 }
