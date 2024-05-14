@@ -17,7 +17,7 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
     public ResponseEntity<CustomApiResponse<?>> signUp(SignUpDto.Req req) {
-        // 중복 확인
+        // 중복 확인(403)
         if (memberRepository.findByUserId(req.getUserId()).isPresent()) {
             CustomApiResponse<Object> responseBody = CustomApiResponse.createFailWithoutData(HttpStatus.FORBIDDEN.value(), "중복된 사용자 계정이 있습니다.");
             return ResponseEntity
@@ -25,7 +25,7 @@ public class MemberServiceImpl implements MemberService{
                     .body(responseBody);
 
         }
-        // 비밀번호 일치 여부 파악
+        // 비밀번호 일치 여부 파악(404)
         if (!req.getPassword().equals(req.getPasswordCheck())) {
             CustomApiResponse<Object> responseBody = CustomApiResponse.createFailWithoutData(HttpStatus.BAD_REQUEST.value(), "비밀번호가 일치하지 않습니다.");
             return ResponseEntity
@@ -33,15 +33,15 @@ public class MemberServiceImpl implements MemberService{
                     .body(responseBody);
         }
         Member member = req.toEntity();
-        // 회원 가입
+        // 회원 가입 (201)
         Member savedMember = memberRepository.save(member);
         // data 생성
         SignUpDto.CreateMember createdMember = new SignUpDto.CreateMember(savedMember.getId(), savedMember.getUpdatedAt().atStartOfDay());
         // responseBody
-        CustomApiResponse<SignUpDto.CreateMember> responseBody = CustomApiResponse.createSuccess(HttpStatus.OK.value(), createdMember, "회원가입이 완료되었습니다.");
+        CustomApiResponse<SignUpDto.CreateMember> responseBody = CustomApiResponse.createSuccess(HttpStatus.CREATED.value(), createdMember, "회원가입이 완료되었습니다.");
         // ResponseEntity
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(HttpStatus.CREATED)
                 .body(responseBody);
     }
 

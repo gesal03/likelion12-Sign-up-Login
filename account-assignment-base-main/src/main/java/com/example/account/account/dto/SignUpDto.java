@@ -16,6 +16,7 @@ public class SignUpDto {
     @AllArgsConstructor
     public static class Req {
         @NotBlank(message = "사용자 계정은 비어 있을 수 없습니다.")
+        @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "사용자 계정은 영문과 숫자만 포함 가능합니다.")
         private String userId;
         @NotBlank(message = "비밀번호는 비어 있을 수 없습니다.")
         private String password;
