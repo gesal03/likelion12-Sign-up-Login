@@ -16,6 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
+    @Override
     public ResponseEntity<CustomApiResponse<?>> signUp(SignUpDto.Req req) {
         // 중복 확인(403)
         if (memberRepository.findByUserId(req.getUserId()).isPresent()) {
@@ -45,6 +46,7 @@ public class MemberServiceImpl implements MemberService{
                 .body(responseBody);
     }
 
+    @Override
     public ResponseEntity<CustomApiResponse<?>> logIn(LogInDto.Req req) {
         Optional<Member> member = memberRepository.findByUserId(req.getUserId());
         // 계정이 없는 경우(404)
@@ -67,7 +69,27 @@ public class MemberServiceImpl implements MemberService{
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(responseBody);
+        }
+    }
 
+    @Override
+    public ResponseEntity<CustomApiResponse<?>> deleteMember(String userId) {
+        Optional<Member> member = memberRepository.findByUserId(userId);
+        // 404(삭제할 멤버 없음)
+        if (member.isEmpty()) {
+            String message = "id가 " + userId + "인 회원은 존재하지 않습니다.";
+            CustomApiResponse<Object> responseBody = CustomApiResponse.createFailWithoutData(HttpStatus.NOT_FOUND.value(), message);
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(responseBody);
+        } else {
+            // 200(삭제 성공)
+            Member findMember = member.get();
+            memberRepository.delete(findMember);
+            CustomApiResponse<Object> responseBody = CustomApiResponse.createSuccessWithoutData(HttpStatus.OK.value(), "회원이 정상적으로 탈퇴되었습니다.");
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(responseBody);
         }
     }
 }

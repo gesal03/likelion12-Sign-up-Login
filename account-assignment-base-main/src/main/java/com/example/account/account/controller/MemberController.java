@@ -6,7 +6,6 @@ import com.example.account.account.service.MemberService;
 import com.example.account.util.response.CustomApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,9 +22,8 @@ public class MemberController {
     public ResponseEntity<CustomApiResponse<?>> logIn(@RequestBody LogInDto.Req req) {
         return memberService.logIn(req);
     }
-//
-//    @DeleteMapping("/withdraw/{memberId}")
-//    public ResponseEntity<CustomApiResponse<?>> deleteMember(@PathVariable("memberId") Long memberId) {
-//        return memberService.deleteMember(memberId);
-//    }
+    @DeleteMapping("/withdraw/{userId}")
+    public ResponseEntity<CustomApiResponse<?>> deleteMember(@PathVariable("userId") String userId) {
+        return memberService.deleteMember(userId);
+    }
 }
