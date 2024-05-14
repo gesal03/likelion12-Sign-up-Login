@@ -14,7 +14,14 @@ import org.springframework.stereotype.Service;
 public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
     public ResponseEntity<CustomApiResponse<?>> signUp(SignUpDto.Req req) {
+        // 중복 확인
+        if (memberRepository.findByUserId(req.getUserId()).isPresent()) {
+            CustomApiResponse<Object> responseBody = CustomApiResponse.createFailWithoutData(HttpStatus.FORBIDDEN.value(), "중복된 사용자 계정이 있습니다.");
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body(responseBody);
 
+        }
         Member member = req.toEntity();
         // 회원 가입
         Member savedMember = memberRepository.save(member);
