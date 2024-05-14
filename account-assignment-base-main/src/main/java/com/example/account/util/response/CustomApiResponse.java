@@ -21,6 +21,11 @@ public class CustomApiResponse<T> {
         return new CustomApiResponse<>(status, data, message);
     }
 
+    // 성공 (데이터 없음)
+    public static <T> CustomApiResponse<T> createSuccessWithoutData(int status, String message) {
+        return new CustomApiResponse<>(status, null, message);
+    }
+
     // 실패
     public static <T> CustomApiResponse<T> createFailWithoutData(int status, String message) {
         return new CustomApiResponse<>(status, null, message);

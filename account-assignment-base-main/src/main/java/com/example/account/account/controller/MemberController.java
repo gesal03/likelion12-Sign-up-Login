@@ -15,16 +15,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/member")
 public class MemberController {
     private final MemberService memberService;
-
     @PostMapping("/sign-up")
     public ResponseEntity<CustomApiResponse<?>> signUp(@Valid @RequestBody SignUpDto.Req req) {
         return memberService.signUp(req);
     }
-
-//    @PostMapping("/login")
-//    public ResponseEntity<CustomApiResponse<?>> logIn(@RequestBody LogInDto.Req req) {
-//        return memberService.logIn(req);
-//    }
+    @PostMapping("/login")
+    public ResponseEntity<CustomApiResponse<?>> logIn(@RequestBody LogInDto.Req req) {
+        return memberService.logIn(req);
+    }
 //
 //    @DeleteMapping("/withdraw/{memberId}")
 //    public ResponseEntity<CustomApiResponse<?>> deleteMember(@PathVariable("memberId") Long memberId) {
