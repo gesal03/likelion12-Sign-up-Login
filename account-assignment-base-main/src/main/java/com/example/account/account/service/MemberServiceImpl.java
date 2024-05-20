@@ -39,7 +39,7 @@ public class MemberServiceImpl implements MemberService{
         // data 생성
         SignUpDto.CreateMember createdMember = new SignUpDto.CreateMember(savedMember.getId(), savedMember.getUpdatedAt().atStartOfDay());
         // responseBody
-        CustomApiResponse<SignUpDto.CreateMember> responseBody = CustomApiResponse.createSuccess(HttpStatus.CREATED.value(), createdMember, "회원가입이 완료되었습니다.");
+        CustomApiResponse<SignUpDto.CreateMember> responseBody = CustomApiResponse.createSuccessWithoutData(HttpStatus.CREATED.value(), "회원가입이 완료되었습니다.");
         // ResponseEntity
         return ResponseEntity
                 .status(HttpStatus.CREATED)
